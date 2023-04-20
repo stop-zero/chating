@@ -1,0 +1,157 @@
+@font-face {
+  font-family: 'GangwonEdu_OTFBoldA';
+  src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_2201-2@1.0/GangwonEdu_OTFBoldA.woff')
+    format('woff');
+  font-weight: normal;
+  font-style: normal;
+}
+
+body {
+  font-family: 'GangwonEdu_OTFBoldA';
+  background-color: black;
+  color: gray;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+}
+
+.all {
+  background-color: rgb(35, 35, 35);
+  border-radius: 10px;
+  width: 90%;
+}
+
+.chat-list {
+  background-color: rgb(35, 35, 35);
+  height: 500px;
+  padding: 10px;
+  overflow-y: auto;
+}
+
+.chat-list div {
+  margin-top: 3px;
+}
+
+.chat-list div div {
+  display: inline-block;
+  padding: 3px;
+  background-color: black;
+}
+
+#date {
+  text-align: center;
+  margin-top: 10px;
+}
+
+.my-chat {
+  text-align: right;
+  display: flex;
+  justify-content: space-between;
+}
+
+.my-chat div {
+  color: rgb(240, 118, 89);
+}
+
+.other-chat div {
+  color: rgb(69, 146, 228);
+}
+
+/* 실습5 DM 기능 */
+.secret-chat div {
+  color: greenyellow;
+}
+
+.notice {
+  color: gray;
+  text-align: center;
+  font-size: 12px;
+}
+
+.d-none {
+  display: none;
+}
+
+.input {
+  height: 5vh;
+  margin: 10px;
+  display: flex;
+  justify-content: space-between;
+}
+
+.input p {
+  line-height: 5vh;
+  text-align: left;
+}
+
+.msg-box {
+  width: 100%;
+}
+
+divnum {
+  margin-right: 5px;
+}
+
+.my-chat-time {
+  text-align: right;
+  font-size: 0.8rem;
+}
+.other-chat-time {
+  margin-left: 1rem;
+  font-size: 0.8rem;
+}
+
+#message {
+  width: 85%;
+  height: 5vh;
+  font-size: 1rem;
+  border-radius: 10px;
+}
+
+.navbar {
+  border-radius: 5px;
+}
+
+#nick-list {
+  width: 4rem;
+  height: 2.5rem;
+  border-radius: 10px;
+}
+
+btn-pass {
+  width: 10%;
+}
+
+/* input ui 변경 시점 width: 1067 */
+@media screen and (max-width: 1067px) {
+  .chat-list {
+    font-size: 1rem;
+  }
+  .input {
+    height: 5vh;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  .nick-list {
+    line-height: 5vh;
+  }
+  btn-pass {
+    width: 5%;
+  }
+  
+}
+
+@media screen and (max-width: 767px) {
+  .input p {
+    display: none;
+  }
+}
+
+/* 반응형 iphone 12 pro 기준 */
+@media screen and (max-width: 390px) {
+  * {
+    font-size: smaller;
+  }
+}

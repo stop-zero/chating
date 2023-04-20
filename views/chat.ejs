@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <!-- bootstrap -->
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+      integrity="sha384-gH2yIJqKdNHPEq0n4Mqa/HGKIhSkIHeL5AyhkYV8i59U5AR6csBvApHHNl/vI1Bx"
+      crossorigin="anonymous"
+    />
+    <script
+      src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0/dist/js/bootstrap.bundle.min.js"
+      integrity="sha384-A3rJD856KowSb7dwlZdYEkO39Gagi7vIsF0jrRAoQmDKKtQBHUuLZ9AsSv4jD4Xa"
+      crossorigin="anonymous"
+    ></script>
+    <!-- fontawesome -->
+    <script
+      src="https://kit.fontawesome.com/035c90ce67.js"
+      crossorigin="anonymous"
+    ></script>
+    <script
+      src="https://cdn.socket.io/4.6.0/socket.io.min.js"
+      integrity="sha384-c79GN5VsunZvi+Q/WObgk2in0CbZsHnjEqvFxC5DxHn9lTfNce2WW6h2pH6u/kF+"
+      crossorigin="anonymous"
+    ></script>
+    <link rel="stylesheet" href="/static/index.css" />
+    <title>My chat 💻</title>
+  </head>
+  <body>
+    <div class="all">
+      <nav class="navbar navbar-dark bg-dark">
+        <div class="container">
+          <div class="entry-box">
+            <input
+              type="text"
+              id="nickname"
+              placeholder="Nickname"
+              onkeyup="enterkey2()"
+              autofocus
+            />
+            <button
+              type="button"
+              class="btn btn-outline-secondary"
+              onclick="entry();"
+            >
+              입장
+            </button>
+          </div>
+          <button
+            class="navbar-toggler"
+            type="button"
+            data-bs-toggle="offcanvas"
+            data-bs-target="#offcanvasDarkNavbar"
+            aria-controls="offcanvasDarkNavbar"
+          >
+            <span class="navbar-toggler-icon"></span>
+          </button>
+          <div
+            class="offcanvas offcanvas-end text-bg-dark"
+            tabindex="-1"
+            id="offcanvasDarkNavbar"
+            aria-labelledby="offcanvasDarkNavbarLabel"
+          >
+            <div class="offcanvas-header">
+              <h5 class="offcanvas-title" id="offcanvasDarkNavbarLabel">
+                채팅방
+              </h5>
+
+              <button
+                type="button"
+                class="btn-close btn-close-white"
+                data-bs-dismiss="offcanvas"
+                aria-label="Close"
+              ></button>
+            </div>
+            <div class="offcanvas-body">
+              <ul class="navbar-nav justify-content-end flex-grow-1 pe-3">
+                <li class="nav-item">
+                  <a class="nav-link active" aria-current="page" href="/"
+                    >Home</a
+                  >
+                </li>
+                <li class="nav-item">
+                  <div
+                    class="accordion accordion-flush"
+                    id="accordionFlushExample"
+                  >
+                    <div class="accordion-item">
+                      <h2 class="accordion-header">
+                        <button
+                          class="accordion-button collapsed"
+                          type="button"
+                          data-bs-toggle="collapse"
+                          data-bs-target="#flush-collapseOne"
+                          aria-expanded="false"
+                          aria-controls="flush-collapseOne"
+                        >
+                          채팅 프로젝트 소개
+                        </button>
+                      </h2>
+                      <div
+                        id="flush-collapseOne"
+                        class="accordion-collapse collapse"
+                        data-bs-parent="#accordionFlushExample"
+                      >
+                        <div class="accordion-body">
+                          <h5>⏰ 개발 기간</h5>
+                          - 2023/04/13 ~ 2023/04/15<br /><br />
+
+                          <h5>📌 기능</h5>
+                          - 채팅 기능 <br />
+                          - 보낸 시간 <br />
+                          - 채팅 라인 수 확인<br />
+                          - 대화 상대 목록<br />
+                          - 공백 입력 X <br />
+                          - enter 입력
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <!--  -->
+                </li>
+                <li class="nav-item dropdown">
+                  <a
+                    class="nav-link dropdown-toggle"
+                    role="button"
+                    data-bs-toggle="dropdown"
+                    aria-expanded="false"
+                  >
+                    대화 상대
+                  </a>
+                  <ul class="dropdown-menu dropdown-menu-dark"></ul>
+                </li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </nav>
+      <div class="box">
+        <!--  [실습 3-2] 채팅창 입장 안내 문구 socket.id -> nickname -->
+        <!-- <div class="entry-box">
+     <input type="text" id="nickname" placeholder="Nickname" autofocus>
+     <button type="button" onclick="entry();">입장</button>
+          ß </div> -->
+        <!-- <div class="chat-box d-none"> -->
+        <div class="chat-box d-none">
+          <h5 id="date"></h5>
+          <div id="chat-list" class="chat-list"></div>
+          <div class="number-list"></div>
+          <div class="input">
+            <select id="nick-list"></select>
+            <p>에게</p>
+            <input
+              type="text"
+              id="message"
+              placeholder="메세지를 작성해주세요."
+              onkeyup="enterkey()"
+            />
+            <button
+              type="button"
+              id="msg-btn"
+              class="btn btn-pass pass-btn btn-outline-secondary"
+              onclick="send()"
+            >
+              전송
+            </button>
+          </div>
+        </div>
+        <!-- box -->
+      </div>
+      <!-- all -->
+    </div>
+
+    <!-- [실습1] 각 버튼을 누를 때 마다 서버로 메세지 보내기 -->
+    <!-- <button onclick="sayHello()">hello</button>
+    <button onclick="sayStudy()">study</button>
+    <button onclick="sayBye()">bye</button>
+    <p id="form-server"></p> -->
+
+    <script src="/static/index.js"></script>
+  </body>
+</html>

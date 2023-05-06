@@ -14,4 +14,4 @@ Node.js 기반 실시간 채팅 기능 개발
     - 공백 입력 X
     - enter 입력
 
-- [프로젝트 회고록]()
+- [프로젝트 회고록](https://miunoribird.tistory.com/58#git-1)

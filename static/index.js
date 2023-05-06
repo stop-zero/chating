@@ -6,8 +6,6 @@ let socket = io.connect();
 // 나의 닉네임
 let myNick;
 
-// msg count number
-// let msgCounter = 1;
 
 function enterkey() {
   if (window.event.keyCode == 13) {
@@ -138,8 +136,7 @@ socket.on('newMessage', (data) => {
   let divChat = document.createElement('div');
 
   // #number-list 요소 선택
-  // let numList = document.querySelector('.number-list');
-  // let div2 = document.createElement('div');
+
   //msgCounter
   let divNum = document.createElement('divnum');
 

@@ -17,9 +17,9 @@ body {
 }
 
 .all {
+  width: 90%;
   background-color: rgb(35, 35, 35);
   border-radius: 10px;
-  width: 90%;
 }
 
 .chat-list {
@@ -58,7 +58,7 @@ body {
   color: rgb(69, 146, 228);
 }
 
-/* 실습5 DM 기능 */
+/* DM 기능 */
 .secret-chat div {
   color: greenyellow;
 }
@@ -140,7 +140,6 @@ btn-pass {
   btn-pass {
     width: 5%;
   }
-  
 }
 
 @media screen and (max-width: 767px) {

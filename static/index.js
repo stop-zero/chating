@@ -32,33 +32,18 @@ socket.on('connect', () => {
   console.log('⭕️ Client Socket Connected >> ', socket.id);
 });
 
-// [실습1]
-// function sayHello() {
-//   // clinet -> server 정보 보내기
-//   // socket.emit(event, data): 데이터 "전송"
-//   // => event 라는 이름으로 data 를 전송
-//   socket.emit('hello', { who: 'client', msg: 'hello' });
-
-//   // socket.on(event, callbak): 데이터 "받음"
-//   // event에 대해서 정보를 받아 callback 함수 실행
-//   socket.on('helloKr', (data) => {
-//     const p = document.querySelector('#form-server');
-//     p.textContent = `${data.who} : ${data.msg}`;
-//   });
-// }
-
 // 대화방 날짜
 socket.on('date', (Date) => {
   const date = document.getElementById('date');
   date.textContent = `${Date}`;
 });
 
-// [실습3] 채팅창 입장/퇴장 안내 문구
+// 채팅창 입장/퇴장 안내 문구
 socket.on('notice', (msg) => {
   document
     .querySelector('#chat-list')
     .insertAdjacentHTML('beforeend', `<div class="notice">${msg}</div>`);
-})
+});
 
 //대화 상대
 socket.on('memberList', (msg) => {
@@ -67,7 +52,6 @@ socket.on('memberList', (msg) => {
     .insertAdjacentHTML('beforeend', `<li class="memberList">${msg}</li>`);
 });
 
-// [실습3-2]
 function entry() {
   console.log(document.querySelector('#nickname').value);
 
@@ -93,13 +77,11 @@ socket.on('entrySuccess', (nick) => {
   document.querySelector('.chat-box').classList.remove('d-none');
 });
 
-// [실습3-2]
 // 닉네임 중복 -> alert 띄우기
 socket.on('error', (msg) => {
   alert(msg);
 });
 
-// [실습3-2]
 // 닉네임 리스트 객체 업데이트하는 이벤트를 받음
 socket.on('updateNicks', (obj) => {
   let options = `<option value="all">전체</option>`;
@@ -119,7 +101,6 @@ socket.on('updateNicks', (obj) => {
   document.querySelector('.dropdown-menu').innerHTML = options;
 });
 
-// [실습4] 채팅창 메세지 전송 step1
 // "send" 이벤트 전송 { 닉네임, 입력메세지 }
 function send() {
   const data = {
@@ -143,12 +124,9 @@ function send() {
   document.querySelector('#message').value = ''; // 인풋 초기화
 }
 
-// [실습4] 채팅창 메세지 전송 Step2
 // 서버에 접속한 모든 클라이언트한테 "누가 뭐라고 말했는지" 이벤트 보내기
 socket.on('newMessage', (data) => {
   console.log('socket on newMessage >> ', data); // 새 메세지 정보
-  // dm이 아닌 data: { nick: 'aa', msg: 'xxx' }
-  // dm인 data: { nick: 'aa', dm: '(속닥속닥) ', msg: 'xxx' }
 
   // #chat-list 요소 선택 (파란색 박스 = 메세지 상자)
   let chatList = document.querySelector('#chat-list');
@@ -173,7 +151,6 @@ socket.on('newMessage', (data) => {
 
   let time = div.classList.add('time');
 
-  // 미션!!
   // 새 메세지가 도착했는데, myNick에 저장된 현재 내 닉네임과
   // data 의 닉네임이 같다면, 내 채팅으로 보이게 (오른쪽 배치 == .my-chat)
   // data 의 닉네임이 다르다면, 상대방 채팅으로 보이게 (왼쪽 배치 == .other-chat)
@@ -185,27 +162,19 @@ socket.on('newMessage', (data) => {
     divtime.classList.add('other-chat-time');
   }
 
-  // [실습5] DM 기능 추가
+  // DM 기능 추가
   if (data.dm) {
     div.classList.add('secret-chat');
-    divChat.textContent = data.dm; // divChat 요소에 (속닥속닥) 글자를 추가
+    divChat.textContent = data.dm;
   }
 
   // divChat의 textContent/innerText 값을 적질히 변경
-  // ex. nick : msg 형태로 보이게 했음
-  // divChat.textContent = `${data.nick} : ${data.msg}`; // [실습4]
-  divChat.textContent = divChat.textContent + ` ${data.nick} : ${data.msg}`; // [실습5]
-  // dm; divChat.textContent = '(속닥속닥) ' + 누가 : 메세지
-  // not dm; divChat.textContet = '' + 누가 : 메세지
+  divChat.textContent = divChat.textContent + ` ${data.nick} : ${data.msg}`;
 
   //생성될 때마다 값을 출력.
-  // let msgCounter = document.getElementsByClassName('msgCounter').length;
   console.log('msgCounter >> ', data.msgCounter);
-  // divNum.textContent = divNum.textContent + `${msgCounter} : ${data.time}`;
-  // divNum.textContent = divNum.textContent + `${msgCounter}`;
   divNum.textContent = divNum.textContent + `${data.msgCounter}`;
   div.append(divNum);
-  // numList.append(div);
 
   // divChat 을 div 요소에 추가
   div.append(divChat);
@@ -216,7 +185,6 @@ socket.on('newMessage', (data) => {
   divtime.textContent = divtime.textContent + `${data.time}`;
   chatList.append(divtime);
 
-  // (선택) 메세지가 많아져서 스크롤이 생기더라도 하단 고정
+  // 메세지가 많아져서 스크롤이 생기더라도 하단 고정
   chatList.scrollTop = chatList.scrollHeight;
 });
-

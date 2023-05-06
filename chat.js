@@ -24,7 +24,6 @@ let msgCounter = 1;
 // 메시지 전송 시간
 const time = new Date().toLocaleString();
 
-// [실습3-2]
 // 닉네임 리스트 객체 업데이트
 // 유저가 들어오거나 퇴장할 때 내역 업데이트
 function updateNickList() {
@@ -44,16 +43,6 @@ io.on('connection', (socket) => {
   // => 크롬에서 탭 2개 띄우면 socket.id 는 각각 생김 (2개)
   console.log('⭕ Server Socket Connected >> ', socket.id);
 
-  // [실습1]
-  // socket.on('hello', (data) => {
-  //   console.log(`${data.who} : ${data.msg}`);
-  //   // server -> client 보낼 때
-  //   socket.emit('helloKr', { who: 'hello', msg: '안녕~~~' });
-  // });
-
-  // [실습3] 채팅장 입장 안내 문구
-  // io.emit('notice', `${socket.id.slice(0, 5)}님이 입장하셨습니다.`);
-
   // 현재 날짜를 클라이언트에게 전송
   const currentDate = new Date();
   const year = currentDate.getFullYear();
@@ -63,7 +52,7 @@ io.on('connection', (socket) => {
 
   socket.emit('date', date);
 
-  // [실습3-2] 채팅창 입장 안내 문구 socket.id -> nickname
+  // 채팅창 입장 안내 문구 socket.id -> nickname
   socket.on('setNick', (nick) => {
     console.log('socket on setNick >> ', nick); // 프론트에서 입력한 닉네임 값
 
@@ -85,7 +74,7 @@ io.on('connection', (socket) => {
     }
   });
 
-  // [실습3-3] 접속자 퇴장
+  // 접속자 퇴장
   // disconnect event : 클라이언트가 연결을 끊었을 때 발생 (브라우저 탭 닫음)
   socket.on('disconnect', () => {
     console.log('**** ❌ Server Socket Disonnected >> ', socket.id);
@@ -97,31 +86,12 @@ io.on('connection', (socket) => {
       updateNickList();
   });
 
-  // [실습4] 채팅창 메세지 전송 Step1
+  // 채팅창 메세지 전송 
   socket.on('send', (obj) => {
-    console.log('socket on send >> ', obj); // { myNick: 'ㅁㅁ', dm: '', msg: '안녕' }
-    // [전체] 선택하고 전송시 -> dm: 'all'
-    // 특정 닉네임을 선택하고 전송 -> dm: socket.id
-
-    // [실습4] 채팅창 메세지 전송 Step2
-    // 서버에 접속한 모든 클라이언트한테 "누가 뭐라고 말했는지" 이벤트 보내기
-    // const sendData = { nick: obj.myNick, msg: obj.msg };
-    // io.emit('newMessage', sendData);
-
-    // 메시지 번호 카운터 증가
-    // msgCounter++;
-
-    // [실습5] DM 기능 구현
-    // 만약에 dm 메세지라면; 그 특정 socket.id 에게만 메세지 전달
-    //    { nick, dm, msg }
-    // 만약에 dm 메세지가 아니면; 전체 공지
-    //    { nick, msg }
-
     if (obj.dm !== 'all') {
       // dm 전송
       let dmSocketId = obj.dm; // 각 닉네임에 해당하는 socket.id
       const sendData = {
-        // msgCounter: obj.msgCounter,
         msgCounter: msgCounter++,
         nick: obj.myNick,
         dm: '// ',
@@ -146,7 +116,6 @@ io.on('connection', (socket) => {
   });
 });
 
-// 주의) socket 을 사용할 때는 http.listen으로 PORT 열어야 함!!!
 http.listen(PORT, () => {
   console.log(`http://localhost:${PORT}`);
 });
